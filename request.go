@@ -11,13 +11,14 @@ import (
 var Client *http.Client = http.DefaultClient
 
 type Request struct {
-	BaseURL string
+	baseURL string
 	headers http.Header
 }
 
 func New(baseURL string) *Request {
 	return &Request{
-		BaseURL: baseURL,
+		baseURL: baseURL,
+		headers: make(http.Header),
 	}
 }
 
@@ -42,7 +43,7 @@ func (req *Request) Do(method, path string, payload any, response any) (err erro
 		}
 	}
 
-	r, err := http.NewRequest(method, req.BaseURL+path, buffer)
+	r, err := http.NewRequest(method, req.baseURL+path, buffer)
 	if err != nil {
 		err = fmt.Errorf("failed creating request, %w", err)
 		return
